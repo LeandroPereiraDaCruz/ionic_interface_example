@@ -1,0 +1,246 @@
+  <!DOCTYPE html>
+  <html>
+    <head>
+      <meta charset="utf-8">
+      <meta name="viewport" content="initial-scale=1, maximum-scale=1, user-scalable=no, width=device-width">
+      <title></title>
+
+      <link rel="manifest" href="manifest.json">
+
+      <!-- un-comment this code to enable service worker
+      <script>
+        if ('serviceWorker' in navigator) {
+          navigator.serviceWorker.register('service-worker.js')
+            .then(() => console.log('service worker installed'))
+            .catch(err => console.log('Error', err));
+        }
+      </script>-->
+
+      <link href="lib/ionic/css/ionic.css" rel="stylesheet">
+      <link href="css/style.css" rel="stylesheet">
+
+      <!-- IF using Sass (run gulp sass first), then uncomment below and remove the CSS includes above
+      <link href="css/ionic.app.css" rel="stylesheet">
+      -->
+
+      <!-- ionic/angularjs js -->
+      <script src="lib/ionic/js/ionic.bundle.js"></script>
+
+      <!-- ngCordova script -->
+      <script src="lib/ngCordova/dist/ng-cordova.js"></script>
+
+      <!-- cordova script (this will be a 404 during development) -->
+      <script src="cordova.js"></script>
+
+      <!-- your app's js -->
+      <script src="js/app.js"></script>
+    </head>
+    <body ng-app="starter">
+    
+
+
+      <ion-nav-bar class="bar-positive">
+        <ion-nav-back-button>
+        </ion-nav-back-button>
+      </ion-nav-bar>
+               
+      <ion-nav-view></ion-nav-view>
+    
+
+
+      <script id="login.html" type="text/ng-template">
+        <ion-view view-title="ContasON - Login">
+          <ion-content class="padding">
+            <h3>Login</h3>
+            <div class="list list-inset">
+              <label class="item item-input item-floating-label">
+                <span class="input-label">Usuário:</span>
+                <input ng-model="username" type="text" placeholder="Informe seu usuário aqui.">
+              </label>
+              <label class="item item-input item-floating-label">
+                <span class="input-label">Senha:</span>
+                <input ng-model="password" type="password" placeholder="Informe sua senha aqui.">
+              </label>
+            </div>
+            <a href="#/tab/home" class="button button-block button-positive" >
+               Entrar
+            </a>
+            <div class="card">
+              <div class="item item-text-wrap">
+                Não tem usuário e senha?<br>Cadastre-se agora mesmo no site www.contason.com.br.
+              </div>
+            </div>            
+          </ion-content>
+        </ion-view>
+      </script>
+
+
+
+      <script id="templates/home.html" type="text/ng-template">
+        <ion-view view-title="ContasON - Home">
+        <ion-nav-buttons side="primary">
+          <a class="button button-clear icon ion-refresh"></a>
+        </ion-nav-buttons>
+        <ion-content class="padding">  
+            <h3>Saldo Atual: R$ 1.234,23</h3>
+            <h6>Última sincronização: 12/01/2013 ás 12:32</h6>
+            <div class="button-bar">
+                <a class="button button-balanced button-small icon icon-left ion-plus" href="#/tab/input">Nova Entrada</a> 
+                <a class="button button-assertive button-small icon icon-left ion-plus" href="#/tab/output">Nova Saída</a>
+            </div>
+            <br>
+            <div class="list">
+              <a class="item item-icon-right item-icon-left" ng-repeat="transaction in transactions">
+                <i class="icon ion-star"></i>
+                <h2>{{transaction.name}}</h2>
+                <p style="color:{{transaction.color}}">{{transaction.value | real}}</p>
+                <span class="item-note">
+                  {{transaction.date}} {{transaction.category}}
+                </span>
+                <i class="icon ion-chevron-right"></i>
+              </a>
+            </div>
+            <p>
+              <a class="button button-block button-small button-positive" href="#/login">Logout</a>
+            </p>
+          </ion-content>
+        </ion-view>
+      </script>
+
+
+
+      <script id="templates/tabs.html" type="text/ng-template">
+        <ion-tabs class="tabs-icon-top tabs-bottom tabs-positive">
+          <ion-tab title="Home" icon="ion-home" href="#/tab/home">
+            <ion-nav-view name="home-tab"></ion-nav-view>
+          </ion-tab>
+          <ion-tab title="Sobre" icon="ion-ios-information" href="#/tab/about">
+            <ion-nav-view name="about-tab"></ion-nav-view>
+          </ion-tab>
+          <ion-tab title="Contato" icon="ion-ios-world" ui-sref="tabs.contact">
+            <ion-nav-view name="contact-tab"></ion-nav-view>
+          </ion-tab>
+
+        </ion-tabs>
+      </script>
+
+
+
+      <script id="templates/input.html" type="text/ng-template">
+        <ion-view view-title="ContasON - Nova Entrada">
+          <ion-content class="padding">
+            <h2>Nova Entrada</h2>
+            <div class="list">
+              <label class="item item-input item-stacked-label">
+                <span class="input-label">Data e hora</span>
+                <input type="date" placeholder="Ex: 01/01/2001 01:01">
+              </label>
+              <label class="item item-input item-stacked-label">
+                <span class="input-label">Descrição</span>
+                <input type="text" placeholder="Ex: Salário do mês">
+              </label>
+              <label class="item item-input item-stacked-label">
+                <span class="input-label">Valor</span>
+                <input type="text" placeholder="Ex: 123,45">
+              </label>              
+              <label class="item item-input item-select">
+                <div class="input-label">
+                  Local Entrada
+                </div>
+                <select>
+                  <option>Conta Itau</option>
+                  <option>Conta Caixa</option>
+                </select>
+              </label>              
+            </div>
+            <button class="button button-block button-balanced">Salvar</button>
+            <a class="button icon ion-home" href="#/tab/home">Home</a>
+          </ion-content>
+        </ion-view>
+      </script>
+
+
+
+      <script id="templates/output.html" type="text/ng-template">
+        <ion-view view-title="ContasON - Nova Saída">
+          <ion-content class="padding">
+            <h2>Nova Saída</h2>
+            <div class="list">
+              <label class="item item-input item-stacked-label">
+                <span class="input-label">Data e hora</span>
+                <input type="date" placeholder="Ex: 01/01/2001 01:01">
+              </label>
+              <label class="item item-input item-stacked-label">
+                <span class="input-label">Descrição</span>
+                <input type="text" placeholder="Ex: Salário do mês">
+              </label>
+              <label class="item item-input item-stacked-label">
+                <span class="input-label">Valor</span>
+                <input type="text" placeholder="Ex: 123,45">
+              </label>              
+              <label class="item item-input item-select">
+                <div class="input-label">
+                  Local Entrada
+                </div>
+                <select>
+                  <option>Conta Itau</option>
+                  <option>Conta Caixa</option>
+                </select>
+              </label>
+              <label class="item item-input item-select">
+                <div class="input-label">
+                  Categoria
+                </div>
+                <select>
+                  <option>Restaurante</option>
+                  <option>Casa</option>
+                </select>
+              </label>
+              <label class="item item-input item-select">
+                <div class="input-label">
+                  Status
+                </div>
+                <select>
+                  <option>PAGO</option>
+                  <option>Á PAGAR</option>
+                </select>
+              </label>
+            </div>
+            <button class="button button-block button-balanced">Salvar</button>
+            <a class="button icon ion-home" href="#/tab/home">Home</a>
+          </ion-content>
+        </ion-view>
+      </script>
+
+
+
+      <script id="templates/about.html" type="text/ng-template">
+        <ion-view view-title="ContasON - Sobre">
+          <ion-content class="padding">
+            <h3>ContasON.</h3>
+            <p>O objetivo deste App é disponibilizar para o usuário um modo rápido e fácil de incluir as suas entradas e saídas mesmo que no momento o dispositivo não esteja conectado á internet.</p>
+            <p>Acesse www.contason.com.br para obter todas as funcionalidades.</p>
+          </ion-content>
+        </ion-view>
+      </script>
+
+
+
+      <script id="templates/contact.html" type="text/ng-template">
+        <ion-view title="ContasON - Contato">
+          <ion-content>
+            <div class="list">
+              <div class="item">
+                @Jean Pereira da Cruz
+              </div>
+              <div class="item">
+                @Leandro Pereira da Cruz
+              </div>
+            </div>
+          </ion-content>
+        </ion-view>
+      </script>
+
+
+    </body>
+  </html>
